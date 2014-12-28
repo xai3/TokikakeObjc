@@ -16,4 +16,4 @@ FOUNDATION_EXPORT const unsigned char TokikakeObjcVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <TokikakeObjc/PublicHeader.h>
 
-
+#import "Deferred.h"

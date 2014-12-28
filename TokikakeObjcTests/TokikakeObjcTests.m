@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
+#import "Deferred.h"
+
 @interface TokikakeObjcTests : XCTestCase
 
 @end
@@ -17,24 +19,77 @@
 
 - (void)setUp {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
 }
 
 - (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    XCTAssert(YES, @"Pass");
+- (void)testDone {
+    XCTestExpectation* ex = [self expectationWithDescription:@"wait"];
+    
+    Deferred* deferred = [Deferred new];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        sleep(1);
+        [deferred resolve:@"ok"];
+    });
+    
+    [[[deferred.promise done: ^(NSString* value) {
+		XCTAssertEqual(value, @"ok");
+    }] fail: ^(NSString* error) {
+		XCTFail();
+	}] always: ^{
+		[ex fulfill];
+	}];
+		
+    [self waitForExpectationsWithTimeout:10 handler:^(NSError *error) {
+    }];
 }
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+- (void)testFail {
+	XCTestExpectation* ex = [self expectationWithDescription:@"wait"];
+	
+	Deferred* deferred = [Deferred new];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+		sleep(1);
+		[deferred reject:@"ng"];
+	});
+	
+	[[[deferred.promise done: ^(NSString* value) {
+		XCTFail();
+	}] fail: ^(NSString* error) {
+		XCTAssertEqual(error, @"ng");
+	}] always: ^{
+		[ex fulfill];
+	}];
+	
+	[self waitForExpectationsWithTimeout:10 handler:^(NSError *error) {
+	}];
+}
+
+- (void)testProgress {
+	XCTestExpectation* ex = [self expectationWithDescription:@"wait"];
+	
+	Deferred* deferred = [Deferred new];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+		for (int i = 0; i < 10; i++) {
+			[deferred notify:@(i)];
+		}
+		[deferred resolve:@"ok"];
+	});
+	
+	[[[[deferred.promise progress: ^(NSNumber* progress) {
+		NSLog(@"%@", progress);
+	}] done: ^(NSString* value) {
+		XCTAssertEqual(value, @"ok");
+	}] fail: ^(NSString* error) {
+		XCTFail();
+	}] always: ^{
+		[ex fulfill];
+	}];
+	
+	[self waitForExpectationsWithTimeout:10 handler:^(NSError *error) {
+	}];
 }
 
 @end
