@@ -20,9 +20,9 @@ typedef enum State {
 
 @property (readonly, nonatomic) Promise *promise;
 
-- (void)resolve:(id)value;
-- (void)reject:(id)error;
-- (void)notify:(id)progress;
+- (instancetype)resolve:(id)value;
+- (instancetype)reject:(id)error;
+- (instancetype)notify:(id)progress;
 
 @end
 
@@ -69,6 +69,8 @@ typedef void (^AlwaysHandler)(void);
 
 @property (readonly, nonatomic) NSUInteger progressCount;
 @property (readonly, nonatomic) NSUInteger totalCount;
+
+@property (readonly, nonatomic) NSString* description;
 
 - (id)initWithProgress:(NSUInteger)progressCount total:(NSUInteger)totalCount;
 

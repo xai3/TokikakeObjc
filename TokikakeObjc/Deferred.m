@@ -18,26 +18,20 @@
     return self;
 }
 
-- (void)resolve:(id)value {
+- (instancetype)resolve:(id)value {
     [self.promise performSelector:@selector(resolve:) withObject:value];
+	return self;
 }
 
-- (void)reject:(id)error {
+- (instancetype)reject:(id)error {
     [self.promise performSelector:@selector(reject:) withObject:error];
+	return self;
 }
 
-- (void)notify:(id)progress {
+- (instancetype)notify:(id)progress {
     [self.promise performSelector:@selector(notify:) withObject:progress];
+	return self;
 }
-
-@end
-
-
-@interface Promise ()
-
-- (void)resolve:(id)value;
-- (void)reject:(id)error;
-- (void)notify:(id)progress;
 
 @end
 
@@ -90,7 +84,7 @@
 
 - (void)reject:(id)error {
     NSAssert(error != nil, @"");
-    
+ 
     dispatch_async(_queue, ^{
         if (!self.pending) {
             return;
@@ -230,7 +224,6 @@
 
 @end
 
-
 @implementation BulkProgerss
 
 - (id)initWithProgress:(NSUInteger)progressCount total:(NSUInteger)totalCount {
@@ -240,6 +233,10 @@
         _totalCount = totalCount;
     }
     return self;
+}
+
+- (NSString*)description {
+	return [NSString stringWithFormat:@"%ld / %ld", self.progressCount, self.totalCount];
 }
 
 @end
