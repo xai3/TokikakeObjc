@@ -12,6 +12,9 @@
 		4BEEAD141A4D2FEF00F70A76 /* TokikakeObjcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEEAD131A4D2FEF00F70A76 /* TokikakeObjcTests.m */; };
 		4BEEAD1F1A4D301600F70A76 /* Deferred.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BEEAD1D1A4D301600F70A76 /* Deferred.h */; };
 		4BEEAD201A4D301600F70A76 /* Deferred.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BEEAD1E1A4D301600F70A76 /* Deferred.m */; };
+		B62D71F31A56E5EF0070F12A /* NSURLConnection+Deferred.h in Headers */ = {isa = PBXBuildFile; fileRef = B62D71F11A56E5EF0070F12A /* NSURLConnection+Deferred.h */; };
+		B62D71F41A56E5EF0070F12A /* NSURLConnection+Deferred.m in Sources */ = {isa = PBXBuildFile; fileRef = B62D71F21A56E5EF0070F12A /* NSURLConnection+Deferred.m */; };
+		B62D71F61A56E7D40070F12A /* NSURLConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B62D71F51A56E7D40070F12A /* NSURLConnectionTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +36,9 @@
 		4BEEAD131A4D2FEF00F70A76 /* TokikakeObjcTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TokikakeObjcTests.m; sourceTree = "<group>"; };
 		4BEEAD1D1A4D301600F70A76 /* Deferred.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deferred.h; sourceTree = "<group>"; };
 		4BEEAD1E1A4D301600F70A76 /* Deferred.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Deferred.m; sourceTree = "<group>"; };
+		B62D71F11A56E5EF0070F12A /* NSURLConnection+Deferred.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLConnection+Deferred.h"; sourceTree = "<group>"; };
+		B62D71F21A56E5EF0070F12A /* NSURLConnection+Deferred.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLConnection+Deferred.m"; sourceTree = "<group>"; };
+		B62D71F51A56E7D40070F12A /* NSURLConnectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLConnectionTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +84,8 @@
 				4BEEAD061A4D2FEE00F70A76 /* TokikakeObjc.h */,
 				4BEEAD1D1A4D301600F70A76 /* Deferred.h */,
 				4BEEAD1E1A4D301600F70A76 /* Deferred.m */,
+				B62D71F11A56E5EF0070F12A /* NSURLConnection+Deferred.h */,
+				B62D71F21A56E5EF0070F12A /* NSURLConnection+Deferred.m */,
 				4BEEAD041A4D2FEE00F70A76 /* Supporting Files */,
 			);
 			path = TokikakeObjc;
@@ -95,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				4BEEAD131A4D2FEF00F70A76 /* TokikakeObjcTests.m */,
+				B62D71F51A56E7D40070F12A /* NSURLConnectionTests.m */,
 				4BEEAD111A4D2FEF00F70A76 /* Supporting Files */,
 			);
 			path = TokikakeObjcTests;
@@ -117,6 +126,7 @@
 			files = (
 				4BEEAD071A4D2FEE00F70A76 /* TokikakeObjc.h in Headers */,
 				4BEEAD1F1A4D301600F70A76 /* Deferred.h in Headers */,
+				B62D71F31A56E5EF0070F12A /* NSURLConnection+Deferred.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +227,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BEEAD201A4D301600F70A76 /* Deferred.m in Sources */,
+				B62D71F41A56E5EF0070F12A /* NSURLConnection+Deferred.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,6 +235,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B62D71F61A56E7D40070F12A /* NSURLConnectionTests.m in Sources */,
 				4BEEAD141A4D2FEF00F70A76 /* TokikakeObjcTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -326,6 +338,7 @@
 		4BEEAD181A4D2FEF00F70A76 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -335,12 +348,14 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		4BEEAD191A4D2FEF00F70A76 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
