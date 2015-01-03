@@ -6,6 +6,7 @@
 //  Copyright (c) 2015年 yukiame. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import "NSURLConnection+Deferred.h"
 
 @implementation NSURLConnection (Deferred)
@@ -35,6 +36,24 @@
 		[deferred resolve:data];
 	}];
 	
+	return deferred.promise;
+}
+
++ (Promise*)requestImage:(NSString*)url {
+	Deferred* deferred = [Deferred new];
+	
+	Promise* promise = [self request:url];
+	[[promise done: ^(NSData* data) {
+		UIImage* image = [UIImage imageWithData:data];
+		if (!image) {
+			[deferred reject:[self invalidDataError]];
+			return;
+		}
+		
+		[deferred resolve:image];
+	}] fail: ^(NSError* error) {
+		[deferred reject:error];
+	}];
 	return deferred.promise;
 }
 

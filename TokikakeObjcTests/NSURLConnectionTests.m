@@ -58,21 +58,33 @@
 	}];
 }
 
-//func test1() {
-//	let ex = self.expectationWithDescription("wait")
-//	
-//	NSURLConnection.request("http://github.com", "GET")
-//	.done { data in
-//		println("done: " + String(data.length))
-//	}
-//	.fail { error in
-//		println("fail: " + error.description)
-//	}
-//	.always {
-//		ex.fulfill()
-//	}
-//	
-//	self.waitForExpectationsWithTimeout(10) { error -> Void in
-//	}
-//}
+- (void)testImageIfResolved {
+	XCTestExpectation* ex = [self expectationWithDescription:@"wait"];
+	
+	[[[[NSURLConnection requestImage:@"https://www.google.co.jp/images/srpr/logo11w.png"] done: ^(UIImage* image) {
+		XCTAssertFalse(CGSizeEqualToSize(image.size, CGSizeZero));
+	}] fail: ^(NSError* error) {
+		XCTFail();
+	}] always: ^{
+		[ex fulfill];
+	}];
+	
+	[self waitForExpectationsWithTimeout:10 handler:^(NSError *error) {
+	}];
+}
+
+- (void)testImageIfRejected {
+	XCTestExpectation* ex = [self expectationWithDescription:@"wait"];
+	
+	[[[[NSURLConnection requestImage:@"http://google.com/invalid.jpg"] done: ^(UIImage* image) {
+		XCTFail();
+	}] fail: ^(NSError* error) {
+		NSLog(@"%@", error.localizedDescription);
+	}] always: ^{
+		[ex fulfill];
+	}];
+	
+	[self waitForExpectationsWithTimeout:10 handler:^(NSError *error) {
+	}];
+}
 @end

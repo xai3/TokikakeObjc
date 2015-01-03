@@ -14,4 +14,6 @@
 + (Promise*)request:(NSString*)url;
 + (Promise*)request:(NSString*)url method:(NSString*)method body:(NSData*)body;
 
++ (Promise*)requestImage:(NSString*)url;
+
 @end
