@@ -57,6 +57,34 @@
 	return deferred.promise;
 }
 
++ (Promise*)requestJson:(NSString*)url {
+	return [self requestJson:url method:@"GET" body:nil];
+}
+
++ (Promise*)requestJson:(NSString*)url method:(NSString*)method body:(NSData*)body {
+	Deferred* deferred = [Deferred new];
+	
+	Promise* promise = [self request:url method:method body:body];
+	[[promise done: ^(NSData* data) {
+		NSError* error = nil;
+		id json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
+		if (error) {
+			[deferred reject:error];
+			return;
+		}
+		
+		if (!json) {
+			[deferred reject:[self invalidDataError]];
+			return;
+		}
+		
+		[deferred resolve:json];
+	}] fail: ^(NSError* error) {
+		[deferred reject:error];
+	}];
+	return deferred.promise;
+}
+
 + (NSError*)invalidDataError {
 	return [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: @"Response data is invalid."}];
 }

@@ -16,4 +16,7 @@
 
 + (Promise*)requestImage:(NSString*)url;
 
++ (Promise*)requestJson:(NSString*)url;
++ (Promise*)requestJson:(NSString*)url method:(NSString*)method body:(NSData*)body;
+
 @end

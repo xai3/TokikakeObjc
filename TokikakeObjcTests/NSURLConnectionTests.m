@@ -87,4 +87,36 @@
 	[self waitForExpectationsWithTimeout:10 handler:^(NSError *error) {
 	}];
 }
+
+- (void)testJsonIfResolved {
+	XCTestExpectation* ex = [self expectationWithDescription:@"wait"];
+	
+	[[[[NSURLConnection requestJson:@"https://api.github.com/"] done: ^(NSDictionary* json) {
+		NSString* element = json[@"current_user_url"];
+		XCTAssertTrue([element isEqualToString:@"https://api.github.com/user"]);
+	}] fail: ^(NSError* error) {
+		XCTFail();
+	}] always: ^{
+		[ex fulfill];
+	}];
+	
+	[self waitForExpectationsWithTimeout:10 handler:^(NSError *error) {
+	}];
+}
+
+- (void)testJsonIfRejected {
+	XCTestExpectation* ex = [self expectationWithDescription:@"wait"];
+	
+	[[[[NSURLConnection requestJson:@"https://google.com/"] done: ^(NSDictionary* json) {
+		XCTFail();
+	}] fail: ^(NSError* error) {
+		NSLog(@"fail: %@", error.localizedDescription);
+	}] always: ^{
+		[ex fulfill];
+	}];
+	
+	[self waitForExpectationsWithTimeout:10 handler:^(NSError *error) {
+	}];
+}
+
 @end
