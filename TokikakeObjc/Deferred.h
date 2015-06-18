@@ -29,11 +29,11 @@ typedef enum State {
 
 typedef void (^Handler)(void);
 
-typedef void (^DoneHandler)(id);
-typedef void (^FailHandler)(id);
-typedef void (^ThenHandler)(id, id);
-typedef Promise *(^ThenChainHandler)(id, id);
-typedef void (^ProgressHandler)(id);
+typedef void (^DoneHandler)(id value);
+typedef void (^FailHandler)(id error);
+typedef void (^ThenHandler)(id value, id error);
+typedef Promise *(^ThenChainHandler)(id value, id error);
+typedef void (^ProgressHandler)(id value);
 typedef void (^AlwaysHandler)(void);
 
 @interface Promise : NSObject {
