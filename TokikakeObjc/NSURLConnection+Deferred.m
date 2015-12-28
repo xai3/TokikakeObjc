@@ -22,6 +22,22 @@
 	request.URL = [NSURL URLWithString:url];
 	request.HTTPMethod = method;
 	request.HTTPBody = body;
+    
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_7_0 || __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_9
+    [[[NSURLSession sharedSession] dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            [deferred reject:error];
+            return;
+        }
+        
+        if (!data) {
+            [deferred reject:[self invalidDataError]];
+            return;
+        }
+        
+        [deferred resolve:data];
+    }] resume];
+#else
 	[NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
 		if (connectionError) {
 			[deferred reject:connectionError];
@@ -35,7 +51,8 @@
 		
 		[deferred resolve:data];
 	}];
-	
+#endif
+    
 	return deferred.promise;
 }
 
